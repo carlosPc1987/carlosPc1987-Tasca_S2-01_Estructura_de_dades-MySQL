@@ -1,0 +1,14 @@
+# Ignorar archivos y carpetas no relacionados
+......
+.log
+.tmp
+.dat
+.swp
+.bak
+AppData
+Downloads
+eclipse
+.idea
+.vscode
+node_modules
+NTUSER
