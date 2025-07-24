@@ -1,39 +1,16 @@
-SELECT p.name AS producto, c.name AS clase, p.price
-FROM product p
-JOIN classes c ON p.id_classes = c.id;
+-- 1️-Cuántos productos de categoría 'Begudes' se han vendido en una determinada localidad
+SELECT T.name AS town_name, SUM(OD.quantity) AS total_drinks_sold
+FROM OrderDetail OD
+JOIN Product P ON OD.product_id = P.id
+JOIN FoodOrder FO ON OD.order_id = FO.id
+JOIN Client C ON FO.client_id = C.id
+JOIN Town T ON C.town_id = T.id
+WHERE P.type = 'drink' AND T.name = 'Barcelona'
+GROUP BY T.name;
 
-SELECT p.name, p.price
-FROM product p
-JOIN classes c ON p.id_classes = c.id
-WHERE c.name = 'pizza';
-
-SELECT c.name AS clase, COUNT(*) AS total
-FROM product p
-JOIN classes c ON p.id_classes = c.id
-GROUP BY c.name;
-
-SELECT s.id, s.date_time, s.to_take_away, s.price_total,
-       cl.name AS cliente, sh.direction AS tienda
-FROM sales s
-JOIN client cl ON s.id_client = cl.id
-JOIN shop sh ON s.id_shop = sh.id;
-
-SELECT * FROM sales
-WHERE to_take_away = 'Recollir';
-
-SELECT w.name, w.surname, w.rol, s.direction AS tienda
-FROM worker w
-JOIN shop s ON w.id_shop = s.id
-WHERE w.rol = 'repartidor';
-
-SELECT cl.name, cl.surname, ct.name AS ciudad, z.name AS zona
-FROM client cl
-JOIN city ct ON cl.id_city = ct.id
-JOIN zone z ON cl.id_zone = z.id;
-
-SELECT z.name AS zona, COUNT(*) AS total_tiendas
-FROM shop s
-JOIN zone z ON s.id_zone = z.id
-GROUP BY z.name;
-
-
+-- 2️-Cuántas comandes ha efectuat un determinat empleat
+SELECT E.first_name, E.last_name, COUNT(*) AS total_orders_managed
+FROM FoodOrder FO
+JOIN Employee E ON FO.employee_id = E.id
+WHERE E.id = 1 -- ← cambia por el ID del empleado
+GROUP BY E.id;
