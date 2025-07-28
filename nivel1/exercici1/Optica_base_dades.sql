@@ -1,73 +1,40 @@
--- Create database and use it
-CREATE DATABASE OpticsDB;
-USE OpticsDB;
 
--- SUPPLIER
-CREATE TABLE Supplier (
-    supplier_id INT PRIMARY KEY,
-    name VARCHAR(100)
+DROP DATABASE IF EXISTS tienda;
+CREATE DATABASE tienda CHARACTER SET utf8mb4;
+USE tienda;
+
+CREATE TABLE fabricante (
+  codigo INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(100) NOT NULL
 );
 
-INSERT INTO Supplier (supplier_id, name) VALUES
-(1, 'VisionLab'),
-(2, 'Optical Iberia'),
-(3, 'LensCraft');
-
--- GLASSES
-CREATE TABLE Glasses (
-    id INT PRIMARY KEY,
-    brand VARCHAR(50),
-    supplier_id INT,
-    FOREIGN KEY (supplier_id) REFERENCES Supplier(supplier_id)
+CREATE TABLE producto (
+  codigo INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(100) NOT NULL,
+  precio DOUBLE NOT NULL,
+  codigo_fabricante INT UNSIGNED NOT NULL,
+  FOREIGN KEY (codigo_fabricante) REFERENCES fabricante(codigo)
 );
 
-INSERT INTO Glasses (id, brand, supplier_id) VALUES
-(101, 'Ray-Ban', 1),
-(102, 'Oakley', 2),
-(103, 'Tom Ford', 2),
-(104, 'Persol', 3),
-(105, 'Gucci', 1);
+INSERT INTO fabricante VALUES(1, 'Asus');
+INSERT INTO fabricante VALUES(2, 'Lenovo');
+INSERT INTO fabricante VALUES(3, 'Hewlett-Packard');
+INSERT INTO fabricante VALUES(4, 'Samsung');
+INSERT INTO fabricante VALUES(5, 'Seagate');
+INSERT INTO fabricante VALUES(6, 'Crucial');
+INSERT INTO fabricante VALUES(7, 'Gigabyte');
+INSERT INTO fabricante VALUES(8, 'Huawei');
+INSERT INTO fabricante VALUES(9, 'Xiaomi');
 
--- EMPLOYEE
-CREATE TABLE Employee (
-    id INT PRIMARY KEY,
-    name VARCHAR(100)
-);
+INSERT INTO producto VALUES(1, 'Disco duro SATA3 1TB', 86.99, 5);
+INSERT INTO producto VALUES(2, 'Memoria RAM DDR4 8GB', 120, 6);
+INSERT INTO producto VALUES(3, 'Disco SSD 1 TB', 150.99, 4);
+INSERT INTO producto VALUES(4, 'GeForce GTX 1050Ti', 185, 7);
+INSERT INTO producto VALUES(5, 'GeForce GTX 1080 Xtreme', 755, 6);
+INSERT INTO producto VALUES(6, 'Monitor 24 LED Full HD', 202, 1);
+INSERT INTO producto VALUES(7, 'Monitor 27 LED Full HD', 245.99, 1);
+INSERT INTO producto VALUES(8, 'Portátil Yoga 520', 559, 2);
+INSERT INTO producto VALUES(9, 'Portátil Ideapd 320', 444, 2);
+INSERT INTO producto VALUES(10, 'Impresora HP Deskjet 3720', 59.99, 3);
+INSERT INTO producto VALUES(11, 'Impresora HP Laserjet Pro M26nw', 180, 3);
 
-INSERT INTO Employee (id, name) VALUES
-(1, 'Laura Martinez'),
-(2, 'Carlos Gomez'),
-(3, 'Ana Morales');
-
--- CUSTOMER
-CREATE TABLE Customer (
-    id INT PRIMARY KEY,
-    name VARCHAR(100)
-);
-
-INSERT INTO Customer (id, name) VALUES
-(1, 'Maria Perez'),
-(2, 'Joan Torres'),
-(3, 'Lucía Ramos'),
-(4, 'Pablo Rivera');
-
--- SALES
-CREATE TABLE Sales (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    id_client INT,
-    id_glasses INT,
-    id_worker INT,
-    sales_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_client) REFERENCES Customer(id),
-    FOREIGN KEY (id_glasses) REFERENCES Glasses(id),
-    FOREIGN KEY (id_worker) REFERENCES Employee(id)
-);
-
-INSERT INTO Sales (id_client, id_glasses, id_worker, sales_date) VALUES
-(1, 101, 1, '2025-07-01'),
-(2, 103, 2, '2025-07-05'),
-(3, 102, 1, '2025-07-10'),
-(1, 104, 3, '2025-07-15'),
-(2, 105, 2, '2025-07-20'),
-(4, 101, 1, '2025-07-25'),
-(3, 103, 3, '2025-07-28');
